@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pravi Consultora — Mercado Libre en Cuyo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --green: #2ecc71;
+    --green-dark: #1a7a43;
+    --green-pale: #e8f8f0;
+    --white: #f8f9fa;
+    --gray: #6b7280;
+    --light: #f1f5f9;
+    --border: rgba(255,255,255,0.08);
+    --ml-yellow: #ffe600;
+    --ml-blue: #2d3277;
+  }
+  
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--navy);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── CUSTOM SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--green-dark); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--green); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: transparent;
+  }
+  nav.scrolled {
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 1rem 4rem;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 700;
+    color: #fff; letter-spacing: 0.05em;
+    text-decoration: none;
+    position: relative; z-index: 1001;
+  }
+  .nav-logo span { color: var(--green); }
+  
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+  .nav-links a {
+    color: rgba(255,255,255,0.8); text-decoration: none;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a:not(.nav-cta)::after {
+    content: ''; position: absolute; width: 0; height: 1px;
+    bottom: -4px; left: 0; background-color: var(--green);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:not(.nav-cta):hover::after { width: 100%; }
+  .nav-links a:hover { color: #fff; }
+  
+  .nav-cta {
+    background: var(--green); color: var(--navy) !important;
+    padding: 0.6rem 1.5rem; border-radius: 3px;
+    font-weight: 700 !important;
+    transition: all 0.3s ease !important;
+  }
+  .nav-cta:hover { 
+    background: #27ae60; color: #fff !important;
+    transform: translateY(-2px); box-shadow: 0 4px 15px rgba(46,204,113,0.4);
+  }
+
+  /* ─── MOBILE MENU TOGGLE ─── */
+  .menu-toggle {
+    display: none; flex-direction: column; justify-content: space-between;
+    width: 30px; height: 20px; cursor: pointer; z-index: 1001;
+  }
+  .menu-toggle span {
+    display: block; height: 2px; width: 100%;
+    background: #fff; border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  .menu-toggle.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); background: var(--green); }
+  .menu-toggle.active span:nth-child(2) { opacity: 0; }
+  .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); background: var(--green); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center;
+    background: var(--navy);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80') center/cover no-repeat;
+    opacity: 0.15; mix-blend-mode: luminosity;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(46,204,113,0.15) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(10,22,40,0.9) 0%, rgba(13,33,55,0.8) 50%, #0a1628 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 4rem; max-width: 900px;
+    margin-top: 3rem;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(46,204,113,0.4); background: rgba(46,204,113,0.05);
+    color: var(--green); backdrop-filter: blur(4px);
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 0.5rem 1.2rem;
+    border-radius: 30px; margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+  .hero-tag::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 10px var(--green);
+    animation: pulse 2s infinite;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 7vw, 6rem);
+    font-weight: 300; line-height: 1.05;
+    color: #fff; margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+  .hero h1 em { font-style: normal; color: var(--green); font-weight: 600; position: relative;}
+  .hero h1 em::after {
+    content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 4px;
+    background: var(--green); opacity: 0.3; border-radius: 2px;
+  }
+  .hero-sub {
+    font-size: 1.15rem; color: rgba(255,255,255,0.7);
+    font-weight: 300; max-width: 540px; line-height: 1.7;
+    margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+  .btn-primary {
+    background: var(--green); color: var(--navy);
+    padding: 1rem 2.5rem; font-size: 0.85rem;
+    font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    border-radius: 3px; transition: all 0.3s ease;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+  }
+  .btn-primary:hover::after { left: 100%; }
+  .btn-primary:hover { background: #27ae60; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(46,204,113,0.35); }
+  
+  .btn-outline {
+    border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.9);
+    padding: 1rem 2.5rem; font-size: 0.85rem; background: rgba(255,255,255,0.02);
+    font-weight: 600; letter-spacing: 0.1em; backdrop-filter: blur(5px);
+    text-transform: uppercase; text-decoration: none;
+    border-radius: 3px; transition: all 0.3s ease;
+  }
+  .btn-outline:hover { border-color: var(--green); color: var(--green); background: rgba(46,204,113,0.05); }
+  
+  .hero-scroll {
+    position: absolute; bottom: 3rem; left: 4rem;
+    display: flex; align-items: center; gap: 1rem;
+    opacity: 0; animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+  .hero-scroll span {
+    font-size: 0.72rem; letter-spacing: 0.2em; font-weight: 600;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+  }
+  .scroll-line {
+    width: 60px; height: 1px; background: rgba(255,255,255,0.2);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: ''; position: absolute; left: -100%; top: 0;
+    width: 100%; height: 100%; background: var(--green);
+    animation: scrollAnim 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  .hero-stat {
+    position: absolute; right: 4rem; bottom: 4rem; z-index: 2;
+    text-align: right; backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    padding: 1.5rem 2rem; border-radius: 8px;
+    opacity: 0; animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+  .hero-stat .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem; font-weight: 400; color: var(--green);
+    line-height: 1; margin-bottom: 0.5rem;
+  }
+  .hero-stat .label {
+    font-size: 0.75rem; letter-spacing: 0.15em; font-weight: 500;
+    text-transform: uppercase; color: rgba(255,255,255,0.6);
+  }
+
+  /* ─── SECTION COMMONS ─── */
+  section { padding: 8rem 4rem; position: relative; }
+  .section-label {
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 0.75rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 1.5rem; font-weight: 700;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 40px; height: 2px; background: var(--green);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    font-weight: 300; line-height: 1.1;
+    color: var(--navy); max-width: 650px;
+  }
+  .section-title strong { font-weight: 700; position: relative; }
+  
+  /* ─── INTRO / ESPECIALIZACIÓN ─── */
+  .intro {
+    background: var(--navy);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; padding: 0;
+  }
+  .intro-text {
+    padding: 8rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .intro-text .section-title { color: #fff; }
+  .intro-text p {
+    color: rgba(255,255,255,0.65); font-size: 1.1rem;
+    line-height: 1.8; margin-top: 2rem; max-width: 480px;
+  }
+  .intro-visual {
+    background: url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80') center/cover;
+    position: relative;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 5rem; z-index: 1;
+  }
+  .intro-visual::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,22,40,0.9) 0%, rgba(26,122,67,0.85) 100%);
+    z-index: -1;
+  }
+  .partner-badge {
+    background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border-radius: 16px; padding: 2.5rem;
+    text-align: center; width: 100%; max-width: 400px;
+    animation: floating 6s ease-in-out infinite;
+  }
+  .partner-badge-title {
+    font-size: 0.75rem; letter-spacing: 0.25em; font-weight: 600;
+    text-transform: uppercase; color: rgba(255,255,255,0.8);
+    margin-bottom: 1.5rem;
+  }
+  .partner-badge-logos {
+    display: flex; flex-direction: column; gap: 1rem; align-items: center; justify-content: center;
+  }
+  .logo-pill {
+    background: #fff; border-radius: 8px; width: 100%;
+    padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-weight: 700; font-size: 1.1rem;
+    color: var(--ml-blue); letter-spacing: -0.02em;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .logo-pill.ml { background: var(--ml-yellow); }
+  .logo-pill.ms { color: #fff; background: var(--navy); border: 1px solid rgba(255,255,255,0.1); }
+  .ml-icon { width: 36px; height: auto; }
+
+  /* ─── SERVICIOS ─── */
+  .servicios { background: var(--light); position: relative; }
+  .servicios-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; margin-bottom: 4rem;
+  }
+  .servicios-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: #cbd5e1; border-radius: 8px; overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  }
+  .servicio-card {
+    background: #fff; padding: 3rem 2.5rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative; overflow: hidden;
+    cursor: default; z-index: 1;
+  }
+  .servicio-card::before {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 100%;
+    background: var(--navy); z-index: -1;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .servicio-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 4px;
+    background: var(--green); z-index: 2;
+  }
+  .servicio-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+  .servicio-card:hover::before { transform: translateY(0); }
+  .servicio-card:hover .svc-num { color: rgba(46,204,113,0.2); }
+  .servicio-card:hover .svc-title { color: #fff; }
+  .servicio-card:hover .svc-desc { color: rgba(255,255,255,0.6); }
+  .servicio-card:hover .svc-icon { background: rgba(46,204,113,0.1); border-color: transparent; color: var(--green); transform: scale(1.1); }
+  
+  .svc-num {
+    position: absolute; top: 1.5rem; right: 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem; font-weight: 300;
+    color: var(--light); line-height: 1;
+    transition: color 0.4s; z-index: -1;
+  }
+  .svc-icon {
+    width: 60px; height: 60px;
+    border: 1px solid #e2e8f0; color: var(--navy);
+    border-radius: 12px; display: flex;
+    align-items: center; justify-content: center;
+    margin-bottom: 2rem; transition: all 0.4s;
+  }
+  .svc-icon svg { width: 28px; height: 28px; stroke-width: 1.5; }
+  .svc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 600;
+    color: var(--navy); margin-bottom: 1rem;
+    transition: color 0.4s;
+  }
+  .svc-desc {
+    font-size: 0.95rem; color: var(--gray);
+    line-height: 1.7; transition: color 0.4s;
+  }
+
+  /* ─── CLIENTES ─── */
+  .clientes { background: #fff; }
+  .clientes-header { margin-bottom: 4rem; text-align: center; display: flex; flex-direction: column; align-items: center;}
+  .clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1px; background: #e2e8f0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px; overflow: hidden;
+  }
+  .client-cell {
+    background: #fff; padding: 2.5rem 1.5rem; height: 120px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s; position: relative;
+    filter: grayscale(100%) opacity(0.6);
+  }
+  .client-cell:hover { filter: grayscale(0%) opacity(1); background: var(--green-pale); }
+  .client-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--navy); text-align: center;
+    letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px;
+  }
+  .client-name::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+  }
+
+  /* ─── EQUIPO ─── */
+  .equipo {
+    background: var(--navy);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; padding: 0;
+  }
+  .equipo-visual {
+    background: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80') center/cover;
+    position: relative;
+    padding: 8rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+    overflow: hidden; z-index: 1;
+  }
+  .equipo-visual::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(13,42,26,0.95) 0%, rgba(26,122,67,0.85) 100%);
+    z-index: -1;
+  }
+  .equipo-visual::after {
+    content: 'EQUIPO';
+    position: absolute; right: -3rem; top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10rem; font-weight: 700;
+    color: rgba(255,255,255,0.03);
+    white-space: nowrap; letter-spacing: 0.1em;
+    pointer-events: none;
+  }
+  .equipo-visual .big-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8rem; font-weight: 300;
+    color: rgba(255,255,255,0.15); line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .equipo-visual .big-label {
+    font-size: 0.85rem; letter-spacing: 0.25em; font-weight: 600;
+    text-transform: uppercase; color: rgba(255,255,255,0.7);
+    margin-bottom: 4rem;
+  }
+  .equipo-visual blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 300;
+    color: #fff; line-height: 1.4;
+    border-left: 3px solid var(--green);
+    padding-left: 2rem; position: relative;
+  }
+  .equipo-text {
+    padding: 8rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .equipo-text .section-title { color: #fff; }
+  .equipo-text p {
+    color: rgba(255,255,255,0.65); font-size: 1.1rem;
+    line-height: 1.8; margin-top: 2rem;
+  }
+  .equipo-text .btn-primary { margin-top: 3rem; align-self: flex-start; }
+
+  /* ─── PARTNERS ─── */
+  .partners { background: var(--light); text-align: center; }
+  .partners .section-label { justify-content: center; }
+  .partners .section-label::before { display: none; }
+  .partners .section-title { margin: 0 auto; }
+  .partners-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: #cbd5e1;
+    border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden;
+    margin-top: 4rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+  .partner-cell {
+    background: #fff; padding: 3rem; height: 160px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .partner-cell:hover { background: var(--green-pale); transform: scale(1.02); z-index: 2; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 8px;}
+  .partner-cell .partner-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem; font-weight: 700;
+    color: var(--navy); text-align: center;
+  }
+
+  /* ─── NOVEDADES ─── */
+  .novedades { background: #fff; }
+  .novedades-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; margin-bottom: 4rem;
+  }
+  .novedades-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .noticia-card {
+    border: 1px solid #e2e8f0; border-radius: 8px;
+    overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer; background: #fff; display: flex; flex-direction: column;
+  }
+  .noticia-card:hover {
+    border-color: rgba(46,204,113,0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+  .noticia-card:hover .noticia-img img { transform: scale(1.08); }
+  .noticia-img {
+    height: 220px; overflow: hidden; position: relative;
+    background: var(--navy);
+  }
+  .noticia-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .noticia-tag {
+    position: absolute; top: 1rem; left: 1rem;
+    background: rgba(10,22,40,0.8); backdrop-filter: blur(4px);
+    color: #fff; padding: 0.3rem 0.8rem; border-radius: 4px;
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .noticia-body { padding: 2rem; display: flex; flex-direction: column; flex-grow: 1; }
+  .noticia-date {
+    font-size: 0.75rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gray);
+    font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 6px;
+  }
+  .noticia-date::before { content: ''; width: 4px; height: 4px; background: var(--green); border-radius: 50%; }
+  .noticia-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--navy); line-height: 1.3; margin-bottom: 1rem;
+  }
+  .noticia-excerpt {
+    font-size: 0.95rem; color: var(--gray);
+    line-height: 1.7; margin-bottom: 1.5rem;
+    display: -webkit-box; -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1;
+  }
+  .noticia-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green); text-decoration: none;
+    transition: gap 0.3s; margin-top: auto;
+  }
+  .noticia-link:hover { gap: 1rem; }
+
+  /* ─── CONTACTO ─── */
+  .contacto {
+    background: var(--navy);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; padding: 0; position: relative;
+  }
+  .contacto-info {
+    padding: 8rem 4rem; position: relative;
+    background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80') center/cover;
+    z-index: 1;
+  }
+  .contacto-info::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--navy) 40%, rgba(10,22,40,0.9) 100%); z-index: -1;
+  }
+  .contacto-info .section-title { color: #fff; }
+  .contacto-detail {
+    display: flex; align-items: flex-start; gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .contacto-icon {
+    width: 50px; height: 50px; flex-shrink: 0;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; display: flex;
+    align-items: center; justify-content: center;
+    color: var(--green);
+  }
+  .contacto-icon svg { width: 20px; height: 20px; stroke-width: 2; }
+  .contacto-detail-text { color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6; }
+  .contacto-detail-text strong { color: #fff; display: block; margin-bottom: 0.3rem; font-size: 1.1rem; }
+  .contacto-detail-text a { color: var(--green); text-decoration: none; transition: color 0.3s; }
+  .contacto-detail-text a:hover { color: #fff; }
+  .social-row { display: flex; gap: 1rem; margin-top: 4rem; }
+  .social-btn {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8); padding: 0.8rem 1.5rem;
+    border-radius: 4px; font-size: 0.85rem;
+    font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .social-btn svg { width: 16px; height: 16px; fill: currentColor; }
+  .social-btn:hover { background: var(--green); border-color: var(--green); color: var(--navy); transform: translateY(-3px); }
+  
+  .contacto-form { padding: 8rem 4rem; background: var(--navy); }
+  .form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300; color: #fff;
+    margin-bottom: 3rem;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.6rem; }
+  .form-group label { font-size: 0.75rem; letter-spacing: 0.15em; font-weight: 600; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+  .form-group input, .form-group textarea {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff; padding: 1rem 1.2rem;
+    font-size: 1rem; border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.3s; outline: none;
+    resize: none;
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    border-color: var(--green); background: rgba(46,204,113,0.05); box-shadow: 0 0 15px rgba(46,204,113,0.1);
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+  .form-submit {
+    background: var(--green); color: var(--navy);
+    border: none; padding: 1.2rem 3rem; width: 100%;
+    font-size: 0.9rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: pointer; border-radius: 4px;
+    transition: all 0.3s; margin-top: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  .form-submit:hover { background: #27ae60; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(46,204,113,0.3); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #040b14;
+    padding: 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 700;
+    color: rgba(255,255,255,0.5); letter-spacing: 0.05em;
+  }
+  .footer-logo span { color: var(--green); }
+  .footer-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .footer-links a {
+    color: rgba(255,255,255,0.4); text-decoration: none;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--green); }
+  .footer-copy {
+    font-size: 0.85rem; color: rgba(255,255,255,0.3); text-align: right; line-height: 1.6;
+  }
+
+  /* ─── WHATSAPP FLOAT ─── */
+  .wa-float {
+    position: fixed; right: 2rem; bottom: 2rem; z-index: 999;
+    width: 60px; height: 60px;
+    background: #25d366; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 30px rgba(37,211,102,0.4);
+    text-decoration: none; color: white;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .wa-float svg { width: 32px; height: 32px; fill: currentColor; }
+  .wa-float:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 35px rgba(37,211,102,0.5); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollAnim {
+    0% { left: -100%; } 100% { left: 100%; }
+  }
+  @keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(46,204,113,0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(46,204,113,0); }
+    100% { box-shadow: 0 0 0 0 rgba(46,204,113,0); }
+  }
+  
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1200px) {
+    section { padding: 6rem 3rem; }
+    .hero h1 { font-size: clamp(3rem, 6vw, 4.5rem); }
+    .servicios-grid { grid-template-columns: repeat(2, 1fr); }
+    .novedades-grid { grid-template-columns: repeat(2, 1fr); }
+    .partners-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 992px) {
+    nav { padding: 1.5rem 2rem; }
+    nav.scrolled { padding: 1rem 2rem; }
+    .intro, .equipo, .contacto { grid-template-columns: 1fr; }
+    .intro-visual, .equipo-visual, .contacto-info { padding: 6rem 2rem; }
+    .intro-text, .equipo-text, .contacto-form { padding: 6rem 2rem; }
+    .hero-stat { display: none; }
+    footer { flex-direction: column; gap: 2rem; text-align: center; }
+    .footer-copy { text-align: center; }
+  }
+  @media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-links {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+      background: var(--navy); flex-direction: column; justify-content: center;
+      gap: 2rem; transform: translateX(100%); transition: transform 0.4s ease;
+      z-index: 1000;
+    }
+    .nav-links.active { transform: translateX(0); }
+    .nav-links a { font-size: 1.2rem; }
+    .hero-content { padding: 0 2rem; }
+    .hero-scroll { left: 2rem; }
+    .novedades-grid, .partners-grid { grid-template-columns: 1fr; }
+    .clients-grid { grid-template-columns: repeat(2, 1fr); }
+    .form-row { grid-template-columns: 1fr; }
+    .section-title { font-size: 2.2rem; }
+  }
+  @media (max-width: 480px) {
+    section { padding: 4rem 1.5rem; }
+    .hero h1 { font-size: 2.5rem; }
+    .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+    .hero-actions { flex-direction: column; }
+    .servicios-grid { grid-template-columns: 1fr; }
+    .footer-links { flex-direction: column; gap: 1rem; }
+    .intro-text, .equipo-text, .contacto-form, .contacto-info { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">PRAVI<span>.</span></a>
+  <div class="menu-toggle" id="mobile-menu-btn">
+    <span></span><span></span><span></span>
+  </div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#clientes">Clientes</a></li>
+    <li><a href="#partners">Partners</a></li>
+    <li><a href="#novedades">Novedades</a></li>
+    <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <span class="hero-tag">Consultoría · Digitalización</span>
+    <h1>Nacimos desde la<br><em>experiencia</em> y nos<br>nutrimos de datos.</h1>
+    <p class="hero-sub">Somos la primera consultora especializada en Mercado Libre en Cuyo. Te acompañamos estratégicamente en cada paso de tu transformación digital corporativa.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn-primary">Contáctanos <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="#servicios" class="btn-outline">Ver servicios</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+  <div class="hero-stat">
+    <div class="num">+20</div>
+    <div class="label">Clientes activos<br>en Cuyo</div>
+  </div>
+</section>
+
+<!-- INTRO / ESPECIALIZACIÓN -->
+<div class="intro reveal">
+  <div class="intro-text">
+    <div class="section-label">Especialización</div>
+    <h2 class="section-title">La primer consultora <strong>Mercado Libre</strong> en Cuyo</h2>
+    <p>Tu emprendimiento no puede quedar afuera de la era digital. Contáctate con nosotros y definamos el camino juntos. Aceleramos tus ventas y gestionamos el crecimiento de manera sostenible, apoyados en tecnología y analítica de datos profunda.</p>
+  </div>
+  <div class="intro-visual">
+    <div class="partner-badge">
+      <div class="partner-badge-title">Partners oficiales certificados</div>
+      <div class="partner-badge-logos">
+        <div class="logo-pill ml">
+          <svg class="ml-icon" viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M125.8 44.5c-4.3-1.6-11.8-1.5-17.5 1.5l-4.2 2.2-3-2c-6.8-4.5-16.7-5.5-22.7-2.3-4.3 2.3-10 8.3-12.7 15.6-2.6 7-2.3 14.8.8 20.3 3.5 6.2 10.3 9.4 18 9.4 6 0 11.2-1.8 15.6-5.3.3.6.5 1.2.9 1.7 4 5 11.4 7.5 18 7.5 6.3 0 12.3-2 16.5-5.5 5.5-4.6 8.3-11.5 8.2-20.2 0-9.8-3.7-18.4-17.9-22.9zm-38.3 36c-5 0-8.8-2.6-10.7-7-1.7-4-.1-12.8 4.7-16.8 2.6-2 5.6-3 8.8-3h.4c3.2.2 7 1.8 9.3 5 1.8 2.5 2.5 6 2.2 10-.6 8-6.3 11.8-14.7 11.8zm28.8 4c-5.2 0-9.6-3.2-11.4-8-.6-1.5-1-3-1-4.7 0-4 1.7-7.6 4.6-9.6 2.2-1.5 5-2.2 7.7-2 6.5.4 11 4.3 11.8 10 .8 5.4-1 10.2-5 12.6-2 .8-4.3 1.7-6.7 1.7z" fill="#2d3277"/>
+          </svg>
+          mercado libre
+        </div>
+        <div class="logo-pill ms">mercado shops</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section class="servicios" id="servicios">
+  <div class="servicios-header reveal">
+    <div>
+      <div class="section-label">Servicios</div>
+      <h2 class="section-title">Soluciones que <strong>aceleran</strong><br>tu negocio digital</h2>
+    </div>
+    <a href="#contacto" class="btn-primary" style="flex-shrink:0;">Agendar llamada <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </div>
+  <div class="servicios-grid reveal">
+    <div class="servicio-card">
+      <span class="svc-num">01</span>
+      <div class="svc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+      </div>
+      <div class="svc-title">Ecommerce</div>
+      <p class="svc-desc">Gestión integral, publicación optimizada y escalamiento de ventas en los principales marketplaces de la región.</p>
+    </div>
+    <div class="servicio-card">
+      <span class="svc-num">02</span>
+      <div class="svc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+      </div>
+      <div class="svc-title">Marketing Digital</div>
+      <p class="svc-desc">Diseño de performance y pauta publicitaria. Maximizamos tu visibilidad y retorno de inversión (ROI).</p>
+    </div>
+    <div class="servicio-card">
+      <span class="svc-num">03</span>
+      <div class="svc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><line x1="12" y1="18" x2="12" y2="22"></line><line x1="12" y1="2" x2="12" y2="6"></line></svg>
+      </div>
+      <div class="svc-title">Economía y Finanzas</div>
+      <p class="svc-desc">Asesoramiento impositivo y estructuración financiera para que tu empresa crezca con solidez y máxima rentabilidad.</p>
+    </div>
+    <div class="servicio-card">
+      <span class="svc-num">04</span>
+      <div class="svc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      </div>
+      <div class="svc-title">Capital Humano</div>
+      <p class="svc-desc">Reclutamiento, capacitación y desarrollo de equipos de alto rendimiento orientados al ecosistema digital.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTES -->
+<section class="clientes" id="clientes">
+  <div class="clientes-header reveal">
+    <div class="section-label">Portafolio</div>
+    <h2 class="section-title">Empresas que <strong>confían</strong><br>en nuestra visión</h2>
+  </div>
+  <div class="clients-grid reveal">
+    <div class="client-cell"><div class="client-name">Gonzalo</div></div>
+    <div class="client-cell"><div class="client-name">Esigas</div></div>
+    <div class="client-cell"><div class="client-name">D'Todo</div></div>
+    <div class="client-cell"><div class="client-name">Manzano e Hijos</div></div>
+    <div class="client-cell"><div class="client-name">Manful</div></div>
+    <div class="client-cell"><div class="client-name">Electro Dorrego</div></div>
+    <div class="client-cell"><div class="client-name">Voda Piscinas</div></div>
+    <div class="client-cell"><div class="client-name">Campagna</div></div>
+    <div class="client-cell"><div class="client-name">Montefrio</div></div>
+    <div class="client-cell"><div class="client-name">Plásticos IPAS</div></div>
+    <div class="client-cell"><div class="client-name">Indias</div></div>
+    <div class="client-cell"><div class="client-name">Rodados Contino</div></div>
+    <div class="client-cell"><div class="client-name">Electrónica Mdz</div></div>
+    <div class="client-cell"><div class="client-name">Envases Mendoza</div></div>
+    <div class="client-cell"><div class="client-name" style="font-weight:900;">TECH<span style="font-weight:400">market</span></div></div>
+    <div class="client-cell"><div class="client-name">Voda Insumos</div></div>
+    <div class="client-cell"><div class="client-name">Maguay</div></div>
+    <div class="client-cell"><div class="client-name" style="letter-spacing: 0.1em; text-transform:uppercase;">Knauer</div></div>
+    <div class="client-cell"><div class="client-name">Spice Box</div></div>
+    <div class="client-cell"><div class="client-name">R|X Distribuciones</div></div>
+  </div>
+</section>
+
+<!-- EQUIPO -->
+<div class="equipo reveal">
+  <div class="equipo-visual">
+    <div class="big-num">∞</div>
+    <div class="big-label">Pasión por la transformación</div>
+    <blockquote>
+      "Somos un grupo de innovadores con una pasión inquebrantable por el éxito en ecosistemas digitales."
+    </blockquote>
+  </div>
+  <div class="equipo-text">
+    <div class="section-label">Nuestro Equipo</div>
+    <h2 class="section-title">Especialistas que <strong>aceleran</strong> tus resultados</h2>
+    <p>Te ayudamos a alcanzar tus desafíos comerciales y a preparar tu organización para el cambio estructural. Contamos con un equipo multidisciplinario certificado que te ayudará a escalar las operaciones y a gestionar el crecimiento de manera sostenible en tu empresa, sin importar el nicho.</p>
+    <a href="#contacto" class="btn-primary">Conocé a los expertos</a>
+  </div>
+</div>
+
+<!-- PARTNERS -->
+<section class="partners" id="partners">
+  <div class="reveal">
+    <div class="section-label">Networking</div>
+    <h2 class="section-title">Alianzas <strong>estratégicas</strong></h2>
+  </div>
+  <div class="partners-grid reveal">
+    <div class="partner-cell">
+      <div class="partner-name">MAS Computación<br><span style="font-size:0.8rem;color:var(--gray);font-weight:400; display:block; margin-top:5px;">Sistemas y Seguridad</span></div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-name" style="color:var(--navy); font-size:1.5rem; letter-spacing:-0.05em;">mercado shops</div>
+    </div>
+    <div class="partner-cell" style="background:var(--ml-yellow);">
+      <div class="partner-name" style="color:var(--ml-blue); font-size:1.4rem; display:flex; align-items:center; gap:10px;">
+        <svg class="ml-icon" viewBox="0 0 200 150" fill="none" style="width: 40px;"><path d="M125.8 44.5c-4.3-1.6-11.8-1.5-17.5 1.5l-4.2 2.2-3-2c-6.8-4.5-16.7-5.5-22.7-2.3-4.3 2.3-10 8.3-12.7 15.6-2.6 7-2.3 14.8.8 20.3 3.5 6.2 10.3 9.4 18 9.4 6 0 11.2-1.8 15.6-5.3.3.6.5 1.2.9 1.7 4 5 11.4 7.5 18 7.5 6.3 0 12.3-2 16.5-5.5 5.5-4.6 8.3-11.5 8.2-20.2 0-9.8-3.7-18.4-17.9-22.9zm-38.3 36c-5 0-8.8-2.6-10.7-7-1.7-4-.1-12.8 4.7-16.8 2.6-2 5.6-3 8.8-3h.4c3.2.2 7 1.8 9.3 5 1.8 2.5 2.5 6 2.2 10-.6 8-6.3 11.8-14.7 11.8zm28.8 4c-5.2 0-9.6-3.2-11.4-8-.6-1.5-1-3-1-4.7 0-4 1.7-7.6 4.6-9.6 2.2-1.5 5-2.2 7.7-2 6.5.4 11 4.3 11.8 10 .8 5.4-1 10.2-5 12.6-2 .8-4.3 1.7-6.7 1.7z" fill="#2d3277"/></svg>
+        mercado libre
+      </div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-name">Dragonfish<br><span style="font-size:0.8rem;color:var(--gray);font-weight:400; display:block; margin-top:5px;">Zoo Logic</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- NOVEDADES -->
+<section class="novedades" id="novedades">
+  <div class="novedades-header reveal">
+    <div>
+      <div class="section-label">Novedades</div>
+      <h2 class="section-title">Últimas <strong>noticias</strong> y artículos</h2>
+    </div>
+    <a href="#" class="btn-outline" style="border-color:#cbd5e1;color:var(--navy);flex-shrink:0;">Ir al Blog</a>
+  </div>
+  <div class="novedades-grid">
+    <div class="noticia-card reveal">
+      <div class="noticia-img">
+        <div class="noticia-tag">E-Commerce</div>
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80" alt="Mendoza Tienda Oficial">
+      </div>
+      <div class="noticia-body">
+        <div class="noticia-date">15 Nov 2025</div>
+        <div class="noticia-title">Mendoza lanza su tienda oficial en Mercado Libre</div>
+        <p class="noticia-excerpt">A través de la creación de la Tienda Oficial, se espera que las empresas de Mendoza puedan desarrollar un nuevo canal de comercialización en el marketplace de mayor tráfico del país.</p>
+        <a href="#" class="noticia-link">Leer más →</a>
+      </div>
+    </div>
+    <div class="noticia-card reveal">
+      <div class="noticia-img">
+        <div class="noticia-tag">Certificación</div>
+        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80" alt="Convenio IDITS">
+      </div>
+      <div class="noticia-body">
+        <div class="noticia-date">08 Ene 2026</div>
+        <div class="noticia-title">Firmamos convenio con IDITS como consultora certificada</div>
+        <p class="noticia-excerpt">El rol de las Consultoras Certificadas es el de guiar a aquellos vendedores activos en la plataforma, para que logren potenciar su negocio mediante un asesoramiento integral.</p>
+        <a href="#" class="noticia-link">Leer más →</a>
+      </div>
+    </div>
+    <div class="noticia-card reveal">
+      <div class="noticia-img">
+        <div class="noticia-tag">Capacitación</div>
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80" alt="Mendoza Futura">
+      </div>
+      <div class="noticia-body">
+        <div class="noticia-date">20 Ene 2026</div>
+        <div class="noticia-title">Mendoza Futura llevó a cabo la capacitación final</div>
+        <p class="noticia-excerpt">El programa abre puertas al ingenio para brindar conocimientos tecnológicos integrados con habilidades sociales a estudiantes avanzados de las regiones Centro, Norte y Este de la provincia.</p>
+        <a href="#" class="noticia-link">Leer más →</a>
+      </div>
+    </div>
+    <div class="noticia-card reveal">
+      <div class="noticia-img">
+        <div class="noticia-tag">Evento</div>
+        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80" alt="Emprendedores Mendocinos">
+      </div>
+      <div class="noticia-body">
+        <div class="noticia-date">02 Feb 2026</div>
+        <div class="noticia-title">Capacitan a emprendedores sobre Mercado Libre y Google</div>
+        <p class="noticia-excerpt">El encuentro sobre los beneficios de utilizar la plataforma estará a cargo de Sergio Santisteban, titular de la primera consultora certificada en la región.</p>
+        <a href="#" class="noticia-link">Leer más →</a>
+      </div>
+    </div>
+    <div class="noticia-card reveal">
+      <div class="noticia-img">
+        <div class="noticia-tag">Educación</div>
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80" alt="IDC UNCuyo">
+      </div>
+      <div class="noticia-body">
+        <div class="noticia-date">10 Feb 2026</div>
+        <div class="noticia-title">El IDC y la UNCuyo capacitarán a comerciantes</div>
+        <p class="noticia-excerpt">Comercio Electrónico: potenciá tus ventas. La charla estará disponible por el canal de Youtube de Señal U Académico, con el objetivo de mitigar el impacto económico actual.</p>
+        <a href="#" class="noticia-link">Leer más →</a>
+      </div>
+    </div>
+    <div class="noticia-card reveal">
+      <div class="noticia-img">
+        <div class="noticia-tag">E-Commerce</div>
+        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80" alt="Ventas Online Ciudad">
+      </div>
+      <div class="noticia-body">
+        <div class="noticia-date">18 Feb 2026</div>
+        <div class="noticia-title">La Ciudad ofrece un ciclo gratuito para ventas online</div>
+        <p class="noticia-excerpt">Tiene por objetivo principal brindar herramientas clave a comerciantes y emprendedores para que puedan ofrecer y vender sus productos por Internet profesionalmente.</p>
+        <a href="#" class="noticia-link">Leer más →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<div class="contacto" id="contacto">
+  <div class="contacto-info reveal">
+    <div class="section-label">Contacto</div>
+    <h2 class="section-title">Hablemos sobre la <strong>evolución</strong> de tu proyecto</h2>
+    <div class="contacto-detail">
+      <div class="contacto-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+      <div class="contacto-detail-text">
+        <strong>Oficina Central</strong>
+        Av. Perú 1845 casi Barcala — CAMPUS BARCALA<br>Ciudad de Mendoza, Argentina
+      </div>
+    </div>
+    <div class="contacto-detail">
+      <div class="contacto-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+      <div class="contacto-detail-text">
+        <strong>Correo Electrónico</strong>
+        <a href="mailto:praviconsultora@gmail.com">praviconsultora@gmail.com</a>
+      </div>
+    </div>
+    <div class="contacto-detail">
+      <div class="contacto-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+      <div class="contacto-detail-text">
+        <strong>Atención Telefónica</strong>
+        <a href="tel:2616590935">+54 9 261 659-0935</a>
+      </div>
+    </div>
+    <div class="social-row">
+      <a href="#" class="social-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> Instagram</a>
+      <a href="#" class="social-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg> YouTube</a>
+    </div>
+  </div>
+  <div class="contacto-form reveal">
+    <div class="form-title">Iniciá la consulta</div>
+    <form>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre y Apellido</label>
+          <input type="text" placeholder="Ej: Juan Pérez" required>
+        </div>
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" placeholder="tu@empresa.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Teléfono (WhatsApp)</label>
+          <input type="tel" placeholder="+54 9 261 000-0000">
+        </div>
+        <div class="form-group">
+          <label>Asunto</label>
+          <input type="text" placeholder="¿En qué área necesitas ayuda?">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:1.5rem;">
+        <label>Mensaje Detallado</label>
+        <textarea rows="5" placeholder="Contanos brevemente sobre tu empresa y objetivos..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Enviar Mensaje <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+    </form>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">PRAVI<span>.</span><br><span style="font-size: 0.9rem; font-family: 'DM Sans', sans-serif; font-weight: 400; color: rgba(255,255,255,0.4); letter-spacing: 0.15em; text-transform: uppercase;">Consultoría Digital</span></div>
+  <ul class="footer-links">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#clientes">Portfolio</a></li>
+    <li><a href="#novedades">Noticias</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Pravi Consultora. Todos los derechos reservados.<br>Av. Perú 1845, Campus Barcala · Mendoza, Argentina</div>
+</footer>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/5492616590935" class="wa-float" target="_blank" title="Chatear por WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+  // Sticky nav logic
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const navLinks = document.getElementById('nav-links');
+  
+  menuBtn.addEventListener('click', () => {
+    menuBtn.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      menuBtn.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
+  });
+
+  // Scroll reveal with Intersection Observer
+  const reveals = document.querySelectorAll('.reveal');
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // Stop observing once revealed
+      }
+    });
+  }, observerOptions);
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Stagger children of grid elements dynamically
+  document.querySelectorAll('.servicios-grid .servicio-card, .novedades-grid .noticia-card, .clients-grid .client-cell, .partners-grid .partner-cell').forEach((el, i) => {
+    // Reset index for different grids to keep stagger fresh
+    let parentChildren = Array.from(el.parentElement.children);
+    let localIndex = parentChildren.indexOf(el);
+    el.style.transitionDelay = `${localIndex * 0.1}s`;
+  });
+</script>
+</body>
+</html>
